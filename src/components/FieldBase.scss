@@ -1,12 +1,49 @@
 .field-base-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: space-between;
+
+    &_label {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
 }
 
-.field-base-required-asterisk-icon  {
+.field-base-feedback {
+    color: #6c6c75;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+.field-base-required-asterisk-icon {
     margin-bottom: 6px;
     width: 9px;
     height: 9px;
     filter: invert(10%) sepia(92%) saturate(5864%) hue-rotate(358deg) brightness(101%) contrast(97%);
+}
+
+.localized-field {
+    align-items: center;
+    display: flex;
+    justify-content: flex-start;
+
+    .arrow-down-icon {
+        height: 16px;
+        width: 16px;
+        filter: invert(26%) sepia(83%) saturate(5507%) hue-rotate(220deg) brightness(104%) contrast(97%);
+
+        &:hover {
+            filter: invert(20%) sepia(92%) saturate(5175%) hue-rotate(214deg) brightness(86%) contrast(110%);
+        }
+    }
+
+    button {
+        color: #0b5fff;
+
+        &:hover {
+            color: #0053f0;
+        }
+    }
+
+
 }

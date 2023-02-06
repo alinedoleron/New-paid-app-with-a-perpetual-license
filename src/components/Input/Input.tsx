@@ -1,4 +1,4 @@
-import {ClayInput} from '@clayui/form';
+import { ClayInput } from '@clayui/form';
 import { FieldBase } from "../FieldBase";
 
 import './Input.scss';
@@ -6,7 +6,10 @@ import classNames from 'classnames';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     component?: 'input' | 'textarea';
+    helpMessage?: string;
+    hideFeedback?: boolean;
     label?: string;
+    localized?: boolean;
     required?: boolean;
     tooltip?: string;
     value?: string;
@@ -16,7 +19,10 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement | HTMLTe
 export function Input({
     className,
     component = 'input',
+    helpMessage,
+    hideFeedback,
     label,
+    localized = false,
     placeholder,
     required,
     tooltip,
@@ -26,13 +32,16 @@ export function Input({
     ...otherProps
 }: InputProps) {
     return (
-        <FieldBase 
+        <FieldBase
             className={className}
+            helpMessage={helpMessage}
+            hideFeedback={hideFeedback}
             label={label}
+            localized={localized}
             required={required}
             tooltip={tooltip}
         >
-            <ClayInput 
+            <ClayInput
                 component={component}
                 className='custom-input'
                 placeholder={placeholder}
