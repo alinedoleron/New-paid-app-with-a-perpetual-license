@@ -1,6 +1,6 @@
 import { filesize } from 'filesize';
 import { uniqueId } from 'lodash';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { UploadedFile } from '../../components/FileList/FileList';
 import { Header } from '../../components/Header/Header';
@@ -54,11 +54,19 @@ const TagsItems = [
 	},
 ];
 
+const headers = new Headers({
+	Accept: "application/json",
+	Authorization: "Basic " + btoa("test@liferay.com:test"),
+	"Content-Type": "application/json",
+  });
+
 export function DefineAppProfilePage({
 	onClickBack,
 	onClickContinue,
 }: DefineAppProfilePageProps) {
-	const [{ appDescription, appLogo, appName }, dispatch] = useAppContext();
+	const [{ appCategories, appDescription, appLogo, appName }, dispatch] = useAppContext();
+	const [tags, setTags] = useState([]);
+	const [categories, setCategories] = useState();
 
 	const processUpload = (uploadedFile: UploadedFile) => {
 		const data = new FormData();
@@ -67,6 +75,21 @@ export function DefineAppProfilePage({
 
 		// api.post().then().catch()...
 	};
+
+	useEffect(()=> {
+		const categories = fetch(
+			``,
+			{
+			  body: JSON.stringify({
+				siteId: ''
+			  }),
+			  headers,
+			  method: "POST",
+			}
+		  );
+
+		//   setCategories();
+	}, [])
 
 	const handleUpload = (files: FileList) => {
 		const file = files[0];
@@ -127,10 +150,10 @@ export function DefineAppProfilePage({
 						<Input
 							component='input'
 							label='Name'
-							onChange={({ target: value }) =>
+							onChange={({ target }) =>
 								dispatch({
 									payload: {
-										value,
+										value: target.value,
 									},
 									type: TYPES.UPDATE_APP_NAME,
 								})
@@ -164,7 +187,13 @@ export function DefineAppProfilePage({
 							required
 							tooltip='Categories'
 							items={CategoriesItems}
-							onChange={() => {}}
+							onChange={(value) =>
+							dispatch({
+								payload: {
+									value
+								},
+								type: TYPES.UPDATE_APP_CATEGORIES,
+							})}
 							placeholder='Select categories'
 						/>
 
@@ -173,7 +202,7 @@ export function DefineAppProfilePage({
 							required
 							tooltip='Tags'
 							items={TagsItems}
-							onChange={() => {}}
+							onChange={() => setTags}
 							placeholder='Select tags'
 						/>
 					</div>
@@ -185,6 +214,13 @@ export function DefineAppProfilePage({
 				onClickBack={() => onClickBack()}
 				onClickContinue={() => {
 					dispatch({
+						payload: {
+							appName,
+							appDescription,
+							appLogo,
+							appCategories,
+							tags
+						},
 						type: TYPES.SUBMIT_APP_PROFILE,
 					});
 
